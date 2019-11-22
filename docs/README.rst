@@ -1,14 +1,14 @@
 .. _readme:
 
-template-formula
+template__-formula
 ================
 
 |img_travis| |img_sr|
 
-.. |img_travis| image:: https://travis-ci.com/saltstack-formulas/template-formula.svg?branch=master
+.. |img_travis| image:: https://travis-ci.com/saltstack-formulas/template__-formula.svg?branch=master
    :alt: Travis CI Build Status
    :scale: 100%
-   :target: https://travis-ci.com/saltstack-formulas/template-formula
+   :target: https://travis-ci.com/saltstack-formulas/template__-formula
 .. |img_sr| image:: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
    :alt: Semantic Release
    :scale: 100%
@@ -53,79 +53,79 @@ Available states
 .. contents::
    :local:
 
-``template``
+``template__``
 ^^^^^^^^^^^^
 
 *Meta-state (This is a state that includes other states)*.
 
-This installs the template package,
-manages the template configuration file and then
-starts the associated template service.
+This installs the template__ package,
+manages the template__ configuration file and then
+starts the associated template__ service.
 
-``template.package``
+``template__.package``
 ^^^^^^^^^^^^^^^^^^^^
 
-This state will install the template package only.
+This state will install the template__ package only.
 
-``template.config``
+``template__.config``
 ^^^^^^^^^^^^^^^^^^^
 
-This state will configure the template service and has a dependency on ``template.install``
+This state will configure the template__ service and has a dependency on ``template__.install``
 via include list.
 
-``template.service``
+``template__.service``
 ^^^^^^^^^^^^^^^^^^^^
 
-This state will start the template service and has a dependency on ``template.config``
+This state will start the template__ service and has a dependency on ``template__.config``
 via include list.
 
-``template.clean``
+``template__.clean``
 ^^^^^^^^^^^^^^^^^^
 
 *Meta-state (This is a state that includes other states)*.
 
-this state will undo everything performed in the ``template`` meta-state in reverse order, i.e.
+this state will undo everything performed in the ``template__`` meta-state in reverse order, i.e.
 stops the service,
 removes the configuration file and
 then uninstalls the package.
 
-``template.service.clean``
+``template__.service.clean``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This state will stop the template service and disable it at boot time.
+This state will stop the template__ service and disable it at boot time.
 
-``template.config.clean``
+``template__.config.clean``
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This state will remove the configuration of the template service and has a
-dependency on ``template.service.clean`` via include list.
+This state will remove the configuration of the template__ service and has a
+dependency on ``template__.service.clean`` via include list.
 
-``template.package.clean``
+``template__.package.clean``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This state will remove the template package and has a depency on
-``template.config.clean`` via include list.
+This state will remove the template__ package and has a depency on
+``template__.config.clean`` via include list.
 
-``template.subcomponent``
+``template__.subcomponent``
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 *Meta-state (This is a state that includes other states)*.
 
 This state installs a subcomponent configuration file before
-configuring and starting the template service.
+configuring and starting the template__ service.
 
-``template.subcomponent.config``
+``template__.subcomponent.config``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This state will configure the template subcomponent and has a
-dependency on ``template.config`` via include list.
+This state will configure the template__ subcomponent and has a
+dependency on ``template__.config`` via include list.
 
-``template.subcomponent.config.clean``
+``template__.subcomponent.config.clean``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This state will remove the configuration of the template subcomponent
-and reload the template service by a dependency on
-``template.service.running`` via include list and ``watch_in``
+This state will remove the configuration of the template__ subcomponent
+and reload the template__ service by a dependency on
+``template__.service.running`` via include list and ``watch_in``
 requisite.
 
 Testing
@@ -151,7 +151,7 @@ e.g. ``debian-9-2019-2-py3``.
 ``bin/kitchen converge``
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Creates the docker instance and runs the ``template`` main state, ready for testing.
+Creates the docker instance and runs the ``template__`` main state, ready for testing.
 
 ``bin/kitchen verify``
 ^^^^^^^^^^^^^^^^^^^^^^

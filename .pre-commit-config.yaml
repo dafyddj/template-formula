@@ -6,7 +6,7 @@
 default_stages: [commit]
 repos:
   - repo: https://github.com/dafyddj/commitlint-pre-commit-hook
-    rev: v2.3.0
+    rev: travis-cli-test
     hooks:
       - id: commitlint
         name: Check commit message using commitlint

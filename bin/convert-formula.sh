@@ -58,7 +58,7 @@ convert_formula() {
   sedi 's/^\(version:\).*/\1 1.0.0/' FORMULA
   sedi 's/^\(*[[:space:]]\{1,\}\)@saltstack-formulas\/wg/\1@NONE/' CODEOWNERS
   # Deleting lines between two patterns
-  sedi '/<REMOVEME/,/REMOVEME>/d' .travis.yml .rubocop.yml
+  sedi '/<REMOVEME/,/REMOVEME>/d' .rubocop.yml
   # shellcheck disable=SC1004 # This backslash+linefeed is literal (sed: replace text)
   sedi '/<REMOVEME/,/REMOVEME>/c \
 None

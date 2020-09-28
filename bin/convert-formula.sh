@@ -10,7 +10,8 @@ usage() {
   echo "usage: $(basename "$0") <new-formula-name>" 1>&2
   echo 1>&2
   echo "Convert template-formula to <new-formula-name>-formula." 1>&2
-  echo "<new-formula-name> should be a string of lowercase characters and numbers only." 1>&2
+  echo "<new-formula-name> should be a string of lowercase characters, numbers or '-',\
+'_' only." 1>&2
   echo "<new-formula-name> should not be any of 'bin' 'docs' 'test'." 1>&2
 }
 
@@ -30,7 +31,7 @@ args() {
     exit 1
   fi
   NEW_NAME=$1
-  if echo "$NEW_NAME" | grep -E --quiet --invert-match '^[a-z0-9]+$'; then
+  if echo "$NEW_NAME" | grep -E --quiet --invert-match '^[a-z0-9_-]+$'; then
     usage
     exit 1
   fi

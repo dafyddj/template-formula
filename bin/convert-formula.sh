@@ -31,6 +31,7 @@ args() {
     exit 1
   fi
   NEW_NAME=$1
+  NEW_NAME_PYSAFE=$(echo "$NEW_NAME" | sed 's/-/__/g')
   if echo "$NEW_NAME" | grep -E --quiet --invert-match '^[a-z0-9_-]+$'; then
     usage
     exit 1
@@ -51,22 +52,43 @@ convert_formula() {
   git rm --quiet bin/convert-formula.sh AUTHORS.md CHANGELOG.md \
     docs/_static/css/custom.css docs/AUTHORS.rst docs/CHANGELOG.rst \
     docs/conf.py docs/CONTRIBUTING_DOCS.rst docs/index.rst
-  git mv TEMPLATE "${NEW_NAME}"
+  git mv TEMPLATE "$NEW_NAME"
+
+  # Replace TEMPLATE within sls and jinja files with py-safe formula name
+  # due to python limitations on identifier names (no hyphen)
+  # including when specifying jinja context variables
+  git ls-files -- '*.sls' '*.jinja' \
+  | while read -r filename; do
+      sedi "s/\({[{%#].*\)TEMPLATE/\1${NEW_NAME_PYSAFE}/" "$filename"
+      sedi "s/\([[:space:]]\{1,\}\)TEMPLATE:/\1${NEW_NAME_PYSAFE}:/" "$filename"
+    done
+
+  # Replace all other instances of TEMPLATE with the regular new formula name
   grep --recursive --files-with-matches --exclude-dir=.git TEMPLATE . \
     | while read -r filename; do
-      sedi 's/TEMPLATE/'"${NEW_NAME}"'/g' "${filename}"
+      sedi "s/TEMPLATE/${NEW_NAME}/g" "$filename"
     done
+
+  # Miscellaneous other replacements
   sedi 's/^\(version:\).*/\1 1.0.0/' FORMULA
   sedi 's/^\(*[[:space:]]\{1,\}\)@saltstack-formulas\/wg/\1@NONE/' CODEOWNERS
+
   # Deleting lines between two patterns
-  sedi '/<REMOVEME/,/REMOVEME>/d' .travis.yml .rubocop.yml
+  sedi '/<REMOVEME/,/REMOVEME>/d' .travis.yml .rubocop.yml ./*/map.jinja
   # shellcheck disable=SC1004 # This backslash+linefeed is literal (sed: replace text)
   sedi '/<REMOVEME/,/REMOVEME>/c \
 None
 ' docs/README.rst
+
+  # Produce a commitlint-safe commit message (line length)
+  if [ "${#NEW_NAME}" -gt 25 ]; then
+    NEW_NAME_SHORT=$(echo "$NEW_NAME" | cut -c 1-23)'..'
+  else
+    NEW_NAME_SHORT="$NEW_NAME"
+  fi
   # shellcheck disable=SC2016 # Expressions don't expand in single quotes
   git commit --quiet --all \
-    --message 'feat: convert `template-formula` to `'"${NEW_NAME}"'-formula`' \
+    --message 'feat: convert `template-formula` to `'"$NEW_NAME_SHORT"'-formula`' \
     --message 'BREAKING CHANGE: changed all state names and ids'
 }
 

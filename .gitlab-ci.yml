@@ -136,6 +136,7 @@ rubocop:
   before_script: *bundle_install
   script:
     # Alternative value to consider: `${CI_JOB_NAME}`
+    - 'echo "Starting test job: ${DOCKER_ENV_CI_JOB_NAME}"'
     - 'bin/kitchen verify "${DOCKER_ENV_CI_JOB_NAME}"'
 
 ###############################################################################
